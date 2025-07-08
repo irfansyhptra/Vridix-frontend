@@ -1,43 +1,37 @@
 // src/pages/Dashboard.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ProfileSummary from "../components/dashboard/ProfileSummary";
 import FundedProject from "../components/dashboard/FundedProjects";
 import OrderHistory from "../components/dashboard/OrderHistory";
-
-// Dummy data for the dashboard
-const user = {
-  name: "Investor Visioner",
-  walletAddress: "0xAbCd...1234",
-  totalInvestasi: 7500000,
-  proyekDidanai: 3,
-  totalBelanja: 850000,
-};
-
-const fundedProjects = [
-  { name: "Kebun Cabai Merah Organik", amount: 2500000 },
-  { name: "Hidroponik Selada", amount: 5000000 },
-];
-
-const orderHistory = [
-  {
-    id: "ORD-001",
-    date: "2025-06-15",
-    productName: "Telur Ayam Probiotik",
-    total: 30000,
-    status: "Selesai",
-  },
-  {
-    id: "ORD-002",
-    date: "2025-06-28",
-    productName: "Selada Romain Hidroponik",
-    total: 45000,
-    status: "Dalam Pengiriman",
-  },
-];
+import { useAuth } from "../../context/AuthContext";
+import { localStorageService } from "../../services/localStorageService";
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const [fundedProjects, setFundedProjects] = useState([]);
+  const [orderHistory, setOrderHistory] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      // In a real app, this data might be combined from multiple sources
+      // For now, we get it directly from the user object in localStorage
+      setFundedProjects(user.fundedProjects || []);
+      setOrderHistory(
+        localStorageService.getOrdersByWallet(user.walletAddress)
+      );
+    }
+  }, [user]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <p>Memuat data pengguna...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       <Header />
@@ -49,9 +43,15 @@ const Dashboard = () => {
           <div>
             <h2 className="text-3xl font-bold mb-6">Proyek yang Anda Danai</h2>
             <div className="space-y-4">
-              {fundedProjects.map((proj, i) => (
-                <FundedProject key={i} project={proj} />
-              ))}
+              {fundedProjects.length > 0 ? (
+                fundedProjects.map((proj, i) => (
+                  <FundedProject key={i} project={proj} />
+                ))
+              ) : (
+                <p className="text-gray-400">
+                  Anda belum mendanai proyek apa pun.
+                </p>
+              )}
             </div>
           </div>
 
@@ -59,9 +59,15 @@ const Dashboard = () => {
           <div>
             <h2 className="text-3xl font-bold mb-6">Riwayat Pesanan Anda</h2>
             <div className="space-y-4">
-              {orderHistory.map((order) => (
-                <OrderHistory key={order.id} order={order} />
-              ))}
+              {orderHistory.length > 0 ? (
+                orderHistory.map((order) => (
+                  <OrderHistory key={order.id} order={order} />
+                ))
+              ) : (
+                <p className="text-gray-400">
+                  Anda belum memiliki riwayat pesanan.
+                </p>
+              )}
             </div>
           </div>
         </div>

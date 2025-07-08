@@ -1,12 +1,11 @@
 // src/components/layout/Header.jsx
-
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useWallet } from "../../hooks/useWallet";
-const Header = () => {
-  const { account, connectWallet, disconnectWallet, error } = useWallet();
+import { useAuth } from "../../context/AuthContext";
 
-  // Fungsi untuk memotong alamat wallet agar lebih pendek
+const Header = () => {
+  const { user, login, logout, walletError } = useAuth();
+
   const truncateAddress = (address) => {
     if (!address) return "";
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -58,31 +57,47 @@ const Header = () => {
           >
             Marketplace
           </NavLink>
+          {user && (
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `transition-colors ${
+                  isActive
+                    ? "text-green-400"
+                    : "text-gray-300 hover:text-green-400"
+                }`
+              }
+            >
+              Dasbor
+            </NavLink>
+          )}
         </nav>
 
-        {/* Tombol Wallet */}
+        {/* Tombol Wallet & Auth */}
         <div>
-          {account ? (
+          {user ? (
             <div className="flex items-center space-x-3">
               <span className="bg-gray-800 text-green-400 px-4 py-2 rounded-lg text-sm font-mono">
-                {truncateAddress(account)}
+                {truncateAddress(user.walletAddress)}
               </span>
               <button
-                onClick={disconnectWallet}
+                onClick={logout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors text-sm"
               >
-                Putuskan
+                Keluar
               </button>
             </div>
           ) : (
             <button
-              onClick={connectWallet}
+              onClick={login}
               className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
             >
               Hubungkan Wallet
             </button>
           )}
-          {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+          {walletError && (
+            <p className="text-red-500 text-xs mt-1">{walletError}</p>
+          )}
         </div>
       </div>
     </header>

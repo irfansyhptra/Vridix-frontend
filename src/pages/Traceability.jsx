@@ -3,7 +3,8 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import Header from "../components/layout/Header";
-import { traceabilityData } from "../data/mockData";
+import Footer from "../components/layout/Footer";
+import { localStorageService } from "../services/localStorageService";
 
 const TimelineItem = ({ item, isLast }) => {
   return (
@@ -38,27 +39,29 @@ const TimelineItem = ({ item, isLast }) => {
 
 const Traceability = () => {
   const [searchParams] = useSearchParams();
-  const productId = searchParams.get("id");
-  const data = traceabilityData[productId];
+  const traceabilityId = searchParams.get("id");
+  const data = localStorageService.getTraceabilityData(traceabilityId);
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white">
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col">
         <Header />
-        <main className="container mx-auto px-6 py-12 text-center">
+        <main className="flex-grow container mx-auto px-6 py-12 text-center">
           <h1 className="text-4xl font-bold mb-4">Produk Tidak Ditemukan</h1>
           <p className="text-gray-400">
-            Maaf, data ketertelusuran untuk produk ini tidak tersedia.
+            Maaf, data ketertelusuran untuk produk dengan ID "{traceabilityId}"
+            tidak tersedia.
           </p>
         </main>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       <Header />
-      <main className="container mx-auto px-6 py-12">
+      <main className="container mx-auto px-6 py-12 flex-grow">
         <h1 className="text-4xl font-bold mb-2 text-center">
           Riwayat Produk:{" "}
           <span className="text-green-400">{data.productName}</span>
@@ -77,6 +80,7 @@ const Traceability = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

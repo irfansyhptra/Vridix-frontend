@@ -1,22 +1,21 @@
+// src/components/common/ProtectedRoute.jsx
 import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth"; // Your auth hook
-import { jwtDecode } from "jwt-decode"; // You might need to install jwt-decode
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { authToken } = useAuth();
+  const { user, authToken } = useAuth();
+  const location = useLocation();
 
   if (!authToken) {
-    // User is not logged in
-    return <Navigate to="/login" />; // Redirect to a login page
+
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
-  const decodedToken = jwtDecode(authToken);
-  const userRole = decodedToken.role; // Assuming role is in the JWT payload
-
-  if (allowedRoles && !allowedRoles.includes(userRole)) {
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
     // User does not have the required role
-    return <Navigate to="/unauthorized" />;
+    // Redirect to a "not authorized" page or home
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;
