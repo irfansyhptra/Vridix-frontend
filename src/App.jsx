@@ -4,9 +4,7 @@ import Home from "./pages/Home";
 import Marketplace from "./pages/Marketplace";
 import Crowdfunding from "./pages/Crowdfunding";
 import Traceability from "./pages/Traceability";
-import useWallet from "./hooks/useWallet";
 
-// Ini akan menjadi pusat state aplikasi Anda. Untuk skala besar, pertimbangkan Context API atau Redux.
 function App() {
   return (
     <Router>
