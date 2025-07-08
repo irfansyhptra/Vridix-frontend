@@ -23,7 +23,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* Add other routes for login, unauthorized, etc. */}
       </Routes>
     </Router>
   );
