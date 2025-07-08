@@ -1,38 +1,492 @@
-.App {
-  text-align: center;
+/* src/App.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/* src/App.css atau src/index.css */
+
+/* Pastikan elemen root dan body mengisi tinggi penuh */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */ /* REMOVE THIS LINE */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Pastikan container utama admin layout mengambil tinggi penuh */
+.admin-layout-container {
+  min-height: 100vh; /* Changed to min-height to allow content to extend */
+  display: flex;
+  flex-direction: column; /* Default for mobile */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (min-width: 768px) {
+  /* For breakpoint md */
+  .admin-layout-container {
+    flex-direction: row; /* Layout baris for desktop */
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Pastikan sidebar mengisi tinggi penuh parent flex container */
+.admin-sidebar {
+  height: 100%; /* Important: fill height of flex parent */
+  overflow-y: auto; /* Allows internal scrolling within sidebar */
+}
+
+/* For main content, to allow scrolling if long */
+.admin-main-content {
+  flex-grow: 1; /* Occupy remaining space */
+  overflow-y: auto; /* Allows internal scrolling within main content */
+  height: 100%; /* Important: for overflow-y: auto to work well */
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  scroll-behavior: smooth;
+}
+
+.ticker-tape {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-tape-content {
+  display: inline-block;
+  padding-right: 100%;
+  animation: ticker 25s linear infinite;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.btn-hover {
+  transition: all 0.3s;
+}
+
+.btn-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.text-shadow {
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.7), 0px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  text-stroke: 1px rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.form-input:focus {
+  border-color: #800000;
+  box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.2);
+}
+
+.hero-overlay {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a237e;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a237e;
+}
+
+nav {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-transition {
+  transition: all 0.3s ease;
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(13, 6, 28, 0.2) 0%,
+    rgba(13, 6, 28, 0.8) 80%,
+    #0d061c 100%
+  );
+}
+
+.text-shadow-md {
+  text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5),
+    0px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.mouse-scroll {
+  width: 28px;
+  height: 48px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 60px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.mouse-scroll:hover {
+  border-color: #ffffff;
+}
+
+.mouse-scroll::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 1;
+  animation: scroll-animation 2.2s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes scroll-animation {
+  0% {
+    opacity: 1;
+    top: 8px;
+  }
+  50% {
+    opacity: 0;
+    top: 24px;
+  }
+  100% {
+    opacity: 1;
+    top: 8px;
+  }
+}
+
+/* Glassmorphism Footer Style with Gradient*/
+.footer-dropdown {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 40;
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: none; /* DITAMBAH: Menonaktifkan klik pada container utama */
+}
+
+.footer-content-wrapper {
+  background: linear-gradient(135deg, hsl(235, 73%, 15%), hsl(234, 60%, 30%));
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+
+  transform: translateY(calc(100% - 4rem));
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.07, 1);
+  pointer-events: auto; /* DITAMBAH: Mengaktifkan kembali klik khusus untuk konten di dalamnya */
+}
+
+.footer-content-wrapper.expanded {
+  transform: translateY(0);
+}
+
+.footer-trigger {
+  height: 4rem; /* 64px */
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem; /* 32px */
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+.footer-arrow {
+  font-size: 1.25rem;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.07, 1);
+}
+
+.footer-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+/* Konten utama di dalam footer */
+.footer-main-content {
+  /* Membuat konten bisa di-scroll jika tingginya melebihi layar */
+  max-height: calc(85vh - 4rem); /* 85% tinggi viewport dikurangi tinggi trigger */
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+/* Custom scrollbar for footer content */
+.footer-main-content::-webkit-scrollbar {
+  width: 8px;
+}
+.footer-main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.footer-main-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.footer-main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+/* --- End of New Styling --- */
+
+/* Styles for the compact ProfileCard in the footer (No need to change) */
+.footer-profile-card .pc-card {
+  max-height: 320px;
+  width: 260px;
+  height: auto;
+  aspect-ratio: 0.718;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+/* Styles for the compact ProfileCard in the footer */
+.footer-profile-card .pc-card {
+  max-height: 320px;
+  width: 260px;
+  height: auto;
+  aspect-ratio: 0.718;
+}
+
+.footer-profile-card .pc-details {
+  top: 1.5em;
+}
+
+.footer-profile-card .pc-details h3 {
+  font-size: 1.5em;
+}
+
+.footer-profile-card .pc-details p {
+  font-size: 14px;
+  top: -8px;
+}
+
+.footer-profile-card .pc-user-info {
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
+.footer-profile-card .pc-mini-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.footer-profile-card .pc-user-text {
+  gap: 4px;
+}
+
+.footer-profile-card .pc-handle,
+.footer-profile-card .pc-status {
+  font-size: 12px;
+}
+
+.footer-profile-card .pc-contact-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* Developer Social Links in Footer */
+.developer-socials-footer a {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0; /* slate-200 */
+  transition: all 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.developer-socials-footer a:hover {
+  background-color: #f59e0b; /* amber-500 */
+  color: #1a237e; /* navyblue */
+  transform: translateY(-2px) scale(1.1);
 }
 
-@keyframes App-logo-spin {
+/* Add at the end of src/App.css */
+
+/* For ShinyText */
+@keyframes background-shine {
   from {
-    transform: rotate(0deg);
+    background-position: 0 0;
   }
   to {
-    transform: rotate(360deg);
+    background-position: -250% 0;
   }
 }
+
+.animate-background-shine {
+  animation: background-shine 3s linear infinite;
+}
+
+/* For SplitText */
+.split-text-container {
+  display: inline-block;
+}
+.split-text-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  animation: char-reveal 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--char-index) * 0.04s);
+}
+
+@keyframes char-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Add at the end of src/App.css */
+
+/* Utility class for Gradient Text */
+.text-gradient-maroon {
+  /* Define gradient colors from primary color (maroon) to a lighter color */
+  background-image: linear-gradient(90deg, #1a237e, #535bf2);
+
+  /* Apply background only to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Make text transparent for background to show */
+  color: transparent;
+}
+
+.parallax-header {
+  position: relative;
+  overflow: hidden; /* Important for parallax */
+}
+
+.parallax-header > img {
+  /* Target the img element directly within the header */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Or 140% as before for parallax movement space */
+  object-fit: cover;
+  background-attachment: fixed; /* Apply parallax effect here */
+  z-index: -1; /* Ensure it's behind */
+}
+
+/* Fallback for mobile, because background-attachment: fixed sometimes has issues */
+@media (max-width: 768px) {
+  .parallax-header > img {
+    /* Target the img element directly within the header */
+    background-attachment: scroll;
+    transform: translateY(-15%); /* Adjust to make the image look good */
+  }
+}
+
+
+
+/* START: CSS untuk Animasi Marquee ProkerSection */
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  display: flex;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+.marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  animation: marquee 50s linear infinite;
+  min-width: 100%;
+  gap: 2rem; /* Jarak antar kartu */
+  padding-block: 1rem; /* Memberi ruang vertikal agar efek hover tidak terpotong */
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Penyesuaian untuk kartu di dalam marquee */
+.marquee-content > * {
+  flex-shrink: 0;
+}
+/* END: CSS untuk Animasi Marquee ProkerSection */
