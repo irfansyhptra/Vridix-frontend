@@ -5,6 +5,7 @@ import Header from "../components/layout/Header";
 import { useWallet } from "../hooks/useWallet";
 import { getProjects, fundProject } from "../services/contractService";
 import api from "../api/axiosConfig";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 // Komponen Card tidak perlu diubah, karena sudah menerima onFundClick
 const ProjectCard = ({ project, onFundClick }) => {

@@ -3,7 +3,7 @@ import React from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ProfileSummary from "../components/dashboard/ProfileSummary";
-import FundedProject from "../components/dashboard/FundedProject";
+import FundedProject from "../components/dashboard/FundedProjects";
 import OrderHistory from "../components/dashboard/OrderHistory";
 
 // Dummy data for the dashboard

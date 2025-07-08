@@ -1,10 +1,4 @@
-/* src/App.css */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import "tailwindcss";
 
-/* src/App.css atau src/index.css */
-
-/* Pastikan elemen root dan body mengisi tinggi penuh */
 html,
 body,
 #root {

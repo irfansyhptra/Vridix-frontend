@@ -14,4 +14,3 @@ export default {
   },
   plugins: [],
 };
-npm install ethers react-router-dom
