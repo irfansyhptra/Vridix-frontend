@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Marketplace from "./pages/Marketplace";
 import Crowdfunding from "./pages/Crowdfunding";
-import Traceability from "./pages/Traceability";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 function App() {
   return (
@@ -12,7 +13,17 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/crowdfunding" element={<Crowdfunding />} />
-        <Route path="/traceability" element={<Traceability />} />
+
+        {/* Protected Dashboard Route */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Petani", "Investor"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        {/* Add other routes for login, unauthorized, etc. */}
       </Routes>
     </Router>
   );
