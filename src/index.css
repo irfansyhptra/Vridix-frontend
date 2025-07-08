@@ -2,6 +2,8 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
 
+/* ... rest of your custom css */
+
 /* Custom Navbar Animations */
 @keyframes slideDown {
   from {

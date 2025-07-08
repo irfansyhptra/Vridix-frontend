@@ -2,8 +2,7 @@
 
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useWallet } from "../../context/useWallet"; // Menggunakan path yang benar
-
+import { useWallet } from "../../hooks/useWallet";
 const Header = () => {
   const { account, connectWallet, disconnectWallet, error } = useWallet();
 
