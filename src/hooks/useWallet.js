@@ -1,60 +1,85 @@
-import { useState, useEffect, useCallback } from "react";
+// src/hooks/useWallet.js
+
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
 export const useWallet = () => {
-  const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
+  const [walletAddress, setWalletAddress] = useState(null);
   const [error, setError] = useState(null);
 
-  const connectWallet = useCallback(async () => {
-    if (window.ethereum) {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-
-        setProvider(provider);
-        setAccount(address);
-        setError(null);
-      } catch (err) {
-        console.error(err);
-        setError(
-          "Gagal terhubung ke wallet. Pastikan Anda telah mengizinkan koneksi."
-        );
+  const connectWallet = async () => {
+    try {
+      if (!window.ethereum) {
+        setError("MetaMask tidak terdeteksi. Silakan install MetaMask.");
+        throw new Error("MetaMask not detected.");
       }
-    } else {
-      setError("Wallet Ethereum tidak terdeteksi. Silakan install MetaMask.");
-    }
-  }, []);
 
-  const disconnectWallet = () => {
-    setAccount(null);
-    setProvider(null);
+      // PERBAIKAN: Gunakan ethers.BrowserProvider untuk ethers v6
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      // Minta koneksi ke MetaMask
+      const accounts = await provider.send("eth_requestAccounts", []);
+
+      if (accounts.length > 0) {
+        setWalletAddress(accounts[0]);
+        return accounts[0];
+      } else {
+        setError("Tidak ada akun yang diizinkan.");
+        throw new Error("No accounts allowed.");
+      }
+    } catch (err) {
+      console.error("Error connecting wallet:", err);
+      setError(err.message || "Gagal menghubungkan wallet.");
+      throw err; // Lempar lagi error agar bisa ditangkap oleh pemanggil
+    }
+  };
+
+  const signMessage = async (message) => {
+    if (!window.ethereum) {
+      throw new Error("MetaMask not detected.");
+    }
+    try {
+      // PERBAIKAN: Gunakan ethers.BrowserProvider lagi
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      // PERBAIKAN: getSigner() sekarang bersifat asynchronous, jadi perlu 'await'
+      const signer = await provider.getSigner();
+
+      const signature = await signer.signMessage(message);
+      return signature;
+    } catch (err) {
+      console.error("Error signing message:", err);
+      setError(err.message || "Gagal menandatangani pesan.");
+      throw err;
+    }
   };
 
   useEffect(() => {
-    const handleAccountsChanged = (accounts) => {
-      if (accounts.length > 0) {
-        setAccount(accounts[0]);
-      } else {
-        disconnectWallet();
-      }
-    };
-
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
-    }
-
-    return () => {
+    // Fungsi untuk memeriksa apakah wallet sudah terhubung sebelumnya
+    const checkIfWalletIsConnected = async () => {
       if (window.ethereum) {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
+        // PERBAIKAN: Gunakan ethers.BrowserProvider
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await provider.listAccounts();
+        if (accounts.length > 0 && accounts[0]) {
+          // Di ethers v6, signer object memiliki address, bukan account object
+          setWalletAddress(accounts[0].address || accounts[0]);
+        }
       }
     };
+    checkIfWalletIsConnected();
+
+    // Listener untuk perubahan akun
+    if (window.ethereum?.on) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+        } else {
+          setWalletAddress(null);
+        }
+      });
+    }
   }, []);
 
-  return { account, provider, error, connectWallet, disconnectWallet };
+  return { walletAddress, error, connectWallet, signMessage };
 };
