@@ -5,8 +5,8 @@ import Footer from "../components/layout/Footer";
 import ProfileSummary from "../components/dashboard/ProfileSummary";
 import FundedProject from "../components/dashboard/FundedProjects";
 import OrderHistory from "../components/dashboard/OrderHistory";
-import { useAuth } from "../../context/AuthContext";
-import { localStorageService } from "../../services/localStorageService";
+import { useAuth } from "../context/AuthContext";
+import { localStorageService } from "../services/localStorageService";
 
 const Dashboard = () => {
   const { user } = useAuth();

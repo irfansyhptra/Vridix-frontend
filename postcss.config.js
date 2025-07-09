@@ -1,7 +1,7 @@
 /** @type {import('postcss-load-config').Config} */
 export default {
   plugins: {
-    tailwindcss: {}, // <-- Ubah menjadi ini
+    tailwindcss: {},
     autoprefixer: {},
   },
 };
