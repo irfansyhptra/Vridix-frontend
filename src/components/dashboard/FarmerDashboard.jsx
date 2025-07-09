@@ -1,6 +1,6 @@
 // src/components/dashboard/FarmerDashboard.jsx
 import React from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import Card from "../common/Card";
 import Button from "../common/Button";
 import { Link } from "react-router-dom";

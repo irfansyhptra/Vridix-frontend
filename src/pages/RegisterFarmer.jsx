@@ -2,13 +2,12 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // PERBAIKAN: Impor useAuth
-import { apiService } from "../services/apiService";
+import { useAuth } from "../hooks/useAuth";
 import Button from "../components/common/Button";
 import Card from "../components/common/Card";
 
 const RegisterFarmer = () => {
-  const { user, showToast } = useAuth(); // PERBAIKAN: Gunakan useAuth()
+  const { user, showToast, updateUser, connectWallet } = useAuth(); // PERBAIKAN: Gunakan useAuth()
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,6 +20,40 @@ const RegisterFarmer = () => {
     fileKtp: null,
     fileSertifikatLahan: null,
   });
+
+  // Jika user belum login, tampilkan tombol login
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Login Diperlukan
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Anda harus login terlebih dahulu untuk mendaftar sebagai petani.
+          </p>
+          <div className="space-y-3">
+            <Button
+              onClick={connectWallet}
+              variant="primary"
+              size="large"
+              className="w-full"
+            >
+              Connect Wallet
+            </Button>
+            <Button
+              onClick={() => navigate("/")}
+              variant="secondary"
+              size="large"
+              className="w-full"
+            >
+              Kembali ke Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,20 +88,41 @@ const RegisterFarmer = () => {
 
     setIsSubmitting(true);
     try {
-      const dataToSubmit = new FormData();
-      Object.keys(formData).forEach((key) => {
-        dataToSubmit.append(key, formData[key]);
-      });
+      // Simulasi submit dengan delay (menggantikan API call)
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      await apiService.submitFarmerApplication(dataToSubmit);
+      // Simulasi berhasil mendaftar dan update user role menjadi "Petani" dengan status "menunggu"
+      const updatedUserData = {
+        role: "Petani",
+        statusVerifikasi: "menunggu",
+        alamat: formData.alamatLengkap,
+        jenisUsaha: formData.jenisUsaha,
+        farmerData: {
+          namaLengkap: formData.namaLengkap,
+          nik: formData.nik,
+          alamatLengkap: formData.alamatLengkap,
+          npwp: formData.npwp,
+          rekeningBank: formData.rekeningBank,
+          jenisUsaha: formData.jenisUsaha,
+          submittedAt: new Date().toISOString(),
+          fileKtp: formData.fileKtp?.name || null,
+          fileSertifikatLahan: formData.fileSertifikatLahan?.name || null,
+        },
+      };
+
+      // Update user menggunakan context method
+      updateUser(updatedUserData);
 
       showToast("Pendaftaran berhasil! Menunggu verifikasi admin.", "success");
+
+      // Redirect ke dashboard yang akan menampilkan ApplicationStatus
       navigate("/dashboard");
     } catch (error) {
       console.error("Gagal mendaftar sebagai petani:", error);
-      const errorMessage =
-        error.response?.data?.message || "Terjadi kesalahan saat pendaftaran.";
-      showToast(errorMessage, "error");
+      showToast(
+        "Terjadi kesalahan saat pendaftaran. Silakan coba lagi.",
+        "error"
+      );
     } finally {
       setIsSubmitting(false);
     }

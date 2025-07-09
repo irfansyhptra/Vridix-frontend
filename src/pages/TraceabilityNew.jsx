@@ -18,7 +18,7 @@ const TimelineItem = ({ item, isLast }) => {
             {item.stage}
           </h4>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {new Date(item.date).toLocaleDateString('id-ID')}
+            {new Date(item.date).toLocaleDateString("id-ID")}
           </span>
         </div>
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
@@ -48,19 +48,21 @@ const Traceability = () => {
 
     setLoading(true);
     setError("");
-    
+
     try {
       // Simulasi pencarian data traceability
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       const data = mockData.traceabilityData.find(
-        item => item.qrCode === code.trim()
+        (item) => item.qrCode === code.trim()
       );
-      
+
       if (data) {
         setTraceData(data);
       } else {
-        setError("Kode produk tidak ditemukan. Pastikan kode yang dimasukkan benar.");
+        setError(
+          "Kode produk tidak ditemukan. Pastikan kode yang dimasukkan benar."
+        );
         setTraceData(null);
       }
     } catch (error) {
@@ -91,7 +93,8 @@ const Traceability = () => {
             Pelacakan Produk
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Lacak perjalanan produk pertanian dari lahan hingga meja Anda dengan teknologi blockchain
+            Lacak perjalanan produk pertanian dari lahan hingga meja Anda dengan
+            teknologi blockchain
           </p>
         </div>
 
@@ -100,7 +103,7 @@ const Traceability = () => {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
             Cari Produk
           </h2>
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -123,7 +126,7 @@ const Traceability = () => {
                 </button>
               </div>
             </div>
-            
+
             <button
               type="submit"
               disabled={loading}
@@ -176,30 +179,48 @@ const Traceability = () => {
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">Petani:</span>
-                      <span className="ml-2 text-gray-900 dark:text-white">{traceData.farmer}</span>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">Lokasi Kebun:</span>
-                      <span className="ml-2 text-gray-900 dark:text-white">{traceData.farmLocation}</span>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">Tanggal Tanam:</span>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        Petani:
+                      </span>
                       <span className="ml-2 text-gray-900 dark:text-white">
-                        {new Date(traceData.plantingDate).toLocaleDateString('id-ID')}
+                        {traceData.farmer}
                       </span>
                     </div>
                     <div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">Tanggal Panen:</span>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        Lokasi Kebun:
+                      </span>
                       <span className="ml-2 text-gray-900 dark:text-white">
-                        {new Date(traceData.harvestDate).toLocaleDateString('id-ID')}
+                        {traceData.farmLocation}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        Tanggal Tanam:
+                      </span>
+                      <span className="ml-2 text-gray-900 dark:text-white">
+                        {new Date(traceData.plantingDate).toLocaleDateString(
+                          "id-ID"
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        Tanggal Panen:
+                      </span>
+                      <span className="ml-2 text-gray-900 dark:text-white">
+                        {new Date(traceData.harvestDate).toLocaleDateString(
+                          "id-ID"
+                        )}
                       </span>
                     </div>
                   </div>
-                  
+
                   {/* Certifications */}
                   <div className="mt-4">
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">Sertifikasi:</span>
+                    <span className="font-semibold text-gray-700 dark:text-gray-300">
+                      Sertifikasi:
+                    </span>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {traceData.certifications.map((cert, index) => (
                         <span
@@ -246,11 +267,15 @@ const Traceability = () => {
                   </span>
                 </div>
                 <p className="text-sm text-green-700 dark:text-green-300 mb-3">
-                  Semua data perjalanan produk ini telah direkam secara permanen di blockchain dan tidak dapat diubah.
+                  Semua data perjalanan produk ini telah direkam secara permanen
+                  di blockchain dan tidak dapat diubah.
                 </p>
                 <div className="text-xs text-green-600 dark:text-green-400 space-y-1">
                   <div>🔗 Kode QR: {traceData.qrCode}</div>
-                  <div>⏰ Terakhir Diperbarui: {new Date().toLocaleDateString('id-ID')}</div>
+                  <div>
+                    ⏰ Terakhir Diperbarui:{" "}
+                    {new Date().toLocaleDateString("id-ID")}
+                  </div>
                   <div>🔒 Status: Terverifikasi</div>
                 </div>
               </div>
@@ -273,7 +298,9 @@ const Traceability = () => {
             >
               <div className="text-2xl mb-2">🌾</div>
               <div className="text-sm font-medium">VRDX-BERAS-001</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Beras Organik</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                Beras Organik
+              </div>
             </button>
             <button
               onClick={() => {
@@ -284,7 +311,9 @@ const Traceability = () => {
             >
               <div className="text-2xl mb-2">🌶️</div>
               <div className="text-sm font-medium">VRDX-CABAI-001</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Cabai Rawit</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                Cabai Rawit
+              </div>
             </button>
             <button
               onClick={() => {
@@ -295,7 +324,9 @@ const Traceability = () => {
             >
               <div className="text-2xl mb-2">🌽</div>
               <div className="text-sm font-medium">VRDX-JAGUNG-001</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Jagung Manis</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                Jagung Manis
+              </div>
             </button>
           </div>
         </Card>

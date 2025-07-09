@@ -1,11 +1,25 @@
 // src/components/layout/Header.jsx
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import Button from "../common/Button";
 
 const Header = () => {
-  const { user, login, logout, walletAddress } = useAuth();
+  const { user, login, logout, walletAddress, loading } = useAuth();
+
+  // Loading state
+  if (loading) {
+    return (
+      <header className="bg-gray-800/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <Link to="/" className="text-2xl font-bold text-white">
+            Vridi<span className="text-green-400">x</span>
+          </Link>
+          <div className="text-white">Loading...</div>
+        </div>
+      </header>
+    );
+  }
 
   const truncateAddress = (address) => {
     if (!address) return "";
@@ -36,6 +50,14 @@ const Header = () => {
           >
             Marketplace
           </NavLink>
+          <NavLink
+            to="/traceability"
+            className={({ isActive }) =>
+              `hover:text-green-400 ${isActive && "text-green-400"}`
+            }
+          >
+            Traceability
+          </NavLink>
           {user && (
             <NavLink
               to="/dashboard"
@@ -44,6 +66,18 @@ const Header = () => {
               }
             >
               Dashboard
+            </NavLink>
+          )}
+          {user && user.role !== "Petani" && (
+            <NavLink
+              to="/register-farmer"
+              className={({ isActive }) =>
+                `hover:text-orange-400 text-orange-300 ${
+                  isActive && "text-orange-400"
+                }`
+              }
+            >
+              🌾 Daftar Petani
             </NavLink>
           )}
           {user && (user.role === "Investor" || user.role === "User") && (
@@ -66,6 +100,16 @@ const Header = () => {
               Admin Panel
             </NavLink>
           )}
+          {user && user.role === "Petani" && (
+            <NavLink
+              to="/farmer"
+              className={({ isActive }) =>
+                `hover:text-green-400 ${isActive && "text-green-400"}`
+              }
+            >
+              🌾 Dashboard Petani
+            </NavLink>
+          )}
         </nav>
 
         <div>
@@ -74,6 +118,14 @@ const Header = () => {
               <span className="bg-gray-700 text-green-400 px-4 py-2 rounded-lg text-sm font-mono">
                 {truncateAddress(user.walletAddress || walletAddress)}
               </span>
+              {user.role !== "Admin" && (
+                <NavLink
+                  to="/admin-login"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+                >
+                  Admin
+                </NavLink>
+              )}
               <Button
                 onClick={logout}
                 variant="danger"
@@ -83,7 +135,15 @@ const Header = () => {
               </Button>
             </div>
           ) : (
-            <Button onClick={login}>Hubungkan Wallet</Button>
+            <div className="flex items-center space-x-3">
+              <NavLink
+                to="/admin-login"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+              >
+                Admin Login
+              </NavLink>
+              <Button onClick={login}>Hubungkan Wallet</Button>
+            </div>
           )}
         </div>
       </div>

@@ -1,27 +1,34 @@
 // src/context/AuthContext.jsx
 
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "../hooks/useWallet";
-import { apiService } from "../services/apiService";
-import { jwtDecode } from "jwt-decode";
+import { mockData } from "../data/mockData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// 1. Context tidak lagi di-export secara langsung
-const AuthContext = createContext(null);
+// Export AuthContext untuk hook terpisah dengan default value
+export const AuthContext = createContext({
+  user: null,
+  loading: true,
+  login: () => {},
+  logout: () => {},
+  updateUser: () => {},
+  showToast: () => {},
+  walletAddress: null,
+  connectWallet: () => {},
+});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // PERBAIKAN 1: 'walletError' dihapus karena tidak digunakan
-  const {
-    walletAddress,
-    connectWallet,
-    signMessage: signWalletMessage,
-  } = useWallet();
+  const walletHook = useWallet();
+  const { walletAddress, connectWallet } = walletHook || {
+    walletAddress: null,
+    connectWallet: () => {},
+  };
 
   const showToast = (message, type = "info") => {
     toast[type](message, {
@@ -35,17 +42,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      try {
-        const decodedUser = jwtDecode(token);
-        setUser(decodedUser);
-      } catch (error) {
-        console.error("Invalid token:", error);
-        localStorage.removeItem("authToken");
+    try {
+      // Coba ambil user dari localStorage atau gunakan data mock
+      const savedUser = localStorage.getItem("vridixUser");
+      if (savedUser) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error("Invalid saved user data:", error);
+          localStorage.removeItem("vridixUser");
+        }
+      } else {
+        // Untuk testing: set default user jika tidak ada
+        const defaultUser = mockData.users[0]; // User pertama dari mock data
+        setUser(defaultUser);
+        localStorage.setItem("vridixUser", JSON.stringify(defaultUser));
       }
+    } catch (error) {
+      console.error("Error in AuthContext useEffect:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = async () => {
@@ -56,34 +74,27 @@ export const AuthProvider = ({ children }) => {
         throw new Error("Wallet connection failed.");
       }
 
-      const nonceResponse = await apiService.getNonce(address);
-      const { nonce } = nonceResponse.data;
+      // Simulasi autentikasi dengan mock data
+      // Cari user berdasarkan wallet address atau gunakan user default
+      let mockUser = mockData.users.find((u) => u.walletAddress === address);
 
-      const signature = await signWalletMessage(nonce);
-      if (!signature) {
-        throw new Error("Message signing was cancelled.");
+      if (!mockUser) {
+        // Jika tidak ada user dengan wallet address tersebut, gunakan user pertama sebagai contoh
+        mockUser = mockData.users[0];
+        mockUser.walletAddress = address; // Update address dengan yang terhubung
       }
 
-      const verifyResponse = await apiService.verifySignature(
-        address,
-        signature
-      );
-      const { token } = verifyResponse.data;
-
-      localStorage.setItem("authToken", token);
-      const decodedUser = jwtDecode(token);
-      setUser(decodedUser);
+      // Simpan user ke localStorage
+      localStorage.setItem("vridixUser", JSON.stringify(mockUser));
+      setUser(mockUser);
       showToast("Login berhasil!", "success");
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Login gagal. Silakan coba lagi.";
+      const errorMessage = error.message || "Login gagal. Silakan coba lagi.";
       showToast(errorMessage, "error");
       setUser(null);
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("vridixUser");
     } finally {
       setLoading(false);
     }
@@ -91,9 +102,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("vridixUser");
     navigate("/");
     showToast("Anda telah logout.");
+  };
+
+  const updateUser = (updatedUserData) => {
+    const newUser = { ...user, ...updatedUserData };
+    setUser(newUser);
+    localStorage.setItem("vridixUser", JSON.stringify(newUser));
   };
 
   const value = {
@@ -101,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
+    updateUser,
     showToast,
     walletAddress,
     connectWallet,
@@ -112,14 +130,4 @@ export const AuthProvider = ({ children }) => {
       <ToastContainer />
     </AuthContext.Provider>
   );
-};
-
-// PERBAIKAN 2: Buat dan ekspor custom hook untuk menggunakan context
-// Ini adalah cara modern dan direkomendasikan untuk mengatasi warning Fast Refresh.
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };
