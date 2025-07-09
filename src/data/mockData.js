@@ -3,9 +3,9 @@
 export const mockData = {
   users: [
     {
-      walletAddress: "0xAbCd...1234",
+      walletAddress: "0xInvestorWalletAddress...1234",
       name: "Investor Visioner",
-      role: "Investor",
+      role: "Investor", // Peran sebagai Investor
       totalInvestasi: 7500000,
       proyekDidanai: 2,
       totalBelanja: 850000,
@@ -15,13 +15,34 @@ export const mockData = {
       ],
     },
     {
-      walletAddress: "0x5678...AbCd",
+      walletAddress: "0xPetaniWalletAddress...5678",
       name: "Petani Inovatif",
-      role: "Petani",
+      role: "Petani", // Peran sebagai Petani
+      statusVerifikasi: "terverifikasi", // Status petani
       totalInvestasi: 0,
       proyekDidanai: 0,
       totalBelanja: 150000,
       fundedProjects: [],
+      proposals: [
+        { id: 2, name: "Budidaya Padi Sawah Premium", status: "Didanai" },
+      ],
+    },
+    {
+      walletAddress: "0xAdminWalletAddress...9012",
+      name: "Admin Utama",
+      role: "Admin", // Peran sebagai Admin
+      totalInvestasi: 0,
+      proyekDidanai: 0,
+      totalBelanja: 0,
+    },
+    {
+      walletAddress: "0xPetaniBaruWalletAddress...3456",
+      name: "Petani Baru Menunggu",
+      role: "User", // Role awal sebelum verifikasi
+      statusVerifikasi: "menunggu", // Status petani
+      totalInvestasi: 0,
+      proyekDidanai: 0,
+      totalBelanja: 0,
     },
   ],
   crowdfundingProjects: [
@@ -30,7 +51,7 @@ export const mockData = {
       nama: "Kebun Cabai Organik di Aceh",
       petani: "Kelompok Tani Maju Jaya",
       deskripsi:
-        "Pendanaan untuk budidaya cabai rawit organik seluas 2 hektar dengan metode pertanian berkelanjutan.",
+        "Pendanaan untuk budidaya cabai rawit organik seluas 2 hektar dengan metode pertanian berkelanjutan. Kami menggunakan pupuk kandang terfermentasi dan pestisida nabati untuk menjaga kualitas dan kesehatan tanah. Proyek ini diharapkan dapat meningkatkan pendapatan anggota kelompok tani sebesar 30%.",
       target: 50000000,
       terkumpul: 35000000,
       imbal: "15% per Panen",
@@ -42,25 +63,14 @@ export const mockData = {
       nama: "Budidaya Padi Sawah Premium",
       petani: "Bapak Suripto",
       deskripsi:
-        "Dibutuhkan modal untuk pembelian bibit unggul dan pupuk organik untuk meningkatkan hasil panen padi berkualitas.",
+        "Dibutuhkan modal untuk pembelian bibit unggul dan pupuk organik untuk meningkatkan hasil panen padi berkualitas. Lahan sawah seluas 1 hektar ini memiliki potensi hasil hingga 8 ton gabah kering.",
       target: 30000000,
       terkumpul: 28500000,
       imbal: "Bagi Hasil 60/40",
       lokasi: "Bireuen, Aceh",
       durasi: "4 Bulan",
     },
-    {
-      id: 3,
-      nama: "Investasi Kebun Kopi Gayo",
-      petani: "Koperasi Kopi Gayo Mandiri",
-      deskripsi:
-        "Ekspansi lahan dan pembelian mesin pengolahan baru untuk meningkatkan produksi kopi arabika Gayo kualitas ekspor.",
-      target: 150000000,
-      terkumpul: 95000000,
-      imbal: "18% per Tahun",
-      lokasi: "Takengon, Aceh Tengah",
-      durasi: "24 Bulan",
-    },
+    // ...proyek lain
   ],
   marketplaceProducts: [
     {
@@ -70,6 +80,8 @@ export const mockData = {
       satuan: "per 500g",
       petani: "Koperasi Kopi Gayo Mandiri",
       lokasi: "Takengon, Aceh Tengah",
+      deskripsi:
+        "Biji kopi Arabika Gayo grade 1 yang disangrai dengan level medium, menghasilkan aroma floral dan rasa yang seimbang.",
       traceabilityId: "VRDX-Kopi-001",
     },
     {
@@ -79,77 +91,11 @@ export const mockData = {
       satuan: "per 5kg",
       petani: "Bapak Suripto",
       lokasi: "Bireuen, Aceh",
+      deskripsi:
+        "Beras pulen dan wangi yang ditanam tanpa pestisida kimia, aman untuk konsumsi keluarga.",
       traceabilityId: "VRDX-Beras-015",
     },
-    {
-      id: 3,
-      nama: "Cabai Rawit Merah Segar",
-      harga: 45000,
-      satuan: "per kg",
-      petani: "Kelompok Tani Maju Jaya",
-      lokasi: "Aceh Besar, Aceh",
-      traceabilityId: "VRDX-Cabai-042",
-    },
+    // ...produk lain
   ],
-  orderHistory: [
-    {
-      id: "ORD-001",
-      userWallet: "0xAbCd...1234",
-      date: "2025-06-15",
-      productName: "Telur Ayam Probiotik",
-      total: 30000,
-      status: "Selesai",
-    },
-    {
-      id: "ORD-002",
-      userWallet: "0xAbCd...1234",
-      date: "2025-06-28",
-      productName: "Selada Romain Hidroponik",
-      total: 45000,
-      status: "Dalam Pengiriman",
-    },
-  ],
-  traceabilityData: {
-    "VRDX-Kopi-001": {
-      productName: "Kopi Arabika Gayo (Biji Sangrai)",
-      farmer: "Koperasi Kopi Gayo Mandiri",
-      timeline: [
-        {
-          status: "Penanaman Bibit",
-          date: "2024-01-15",
-          description:
-            "Bibit kopi varietas Gayo 1 ditanam di lahan seluas 5 hektar.",
-          txHash: "0xabc...123",
-        },
-        {
-          status: "Perawatan & Pemupukan",
-          date: "2024-03-20",
-          description: "Pemberian pupuk organik kompos dan pemangkasan rutin.",
-          txHash: "0xdef...456",
-        },
-        {
-          status: "Panen",
-          date: "2024-09-05",
-          description:
-            "Pemanenan ceri kopi merah matang secara selektif (petik merah).",
-          txHash: "0xghi...789",
-        },
-        {
-          status: "Pengolahan & Pengeringan",
-          date: "2024-09-10",
-          description:
-            "Proses semi-washed dan pengeringan biji kopi di bawah sinar matahari.",
-          txHash: "0xjkl...012",
-        },
-        {
-          status: "Distribusi ke Konsumen",
-          date: "2024-10-01",
-          description:
-            "Biji kopi yang telah disangrai dikemas dan siap didistribusikan.",
-          txHash: "0xmno...345",
-        },
-      ],
-    },
-    // ... data untuk produk lain
-  },
+  // ...sisa mockData
 };

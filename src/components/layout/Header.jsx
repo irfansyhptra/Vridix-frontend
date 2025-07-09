@@ -2,9 +2,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Button from "../common/Button";
 
 const Header = () => {
-  const { user, login, logout, walletError } = useAuth();
+  const { user, login, logout, walletAddress } = useAuth();
 
   const truncateAddress = (address) => {
     if (!address) return "";
@@ -12,35 +13,17 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
+    <header className="bg-gray-800/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-white">
           Vridi<span className="text-green-400">x</span>
         </Link>
 
-        {/* Menu Navigasi */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `transition-colors ${
-                isActive
-                  ? "text-green-400"
-                  : "text-gray-300 hover:text-green-400"
-              }`
-            }
-          >
-            Beranda
-          </NavLink>
+        <nav className="hidden md:flex items-center space-x-6 text-gray-300">
           <NavLink
             to="/crowdfunding"
             className={({ isActive }) =>
-              `transition-colors ${
-                isActive
-                  ? "text-green-400"
-                  : "text-gray-300 hover:text-green-400"
-              }`
+              `hover:text-green-400 ${isActive && "text-green-400"}`
             }
           >
             Crowdfunding
@@ -48,11 +31,7 @@ const Header = () => {
           <NavLink
             to="/marketplace"
             className={({ isActive }) =>
-              `transition-colors ${
-                isActive
-                  ? "text-green-400"
-                  : "text-gray-300 hover:text-green-400"
-              }`
+              `hover:text-green-400 ${isActive && "text-green-400"}`
             }
           >
             Marketplace
@@ -61,42 +40,50 @@ const Header = () => {
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                `transition-colors ${
-                  isActive
-                    ? "text-green-400"
-                    : "text-gray-300 hover:text-green-400"
-                }`
+                `hover:text-green-400 ${isActive && "text-green-400"}`
               }
             >
-              Dasbor
+              Dashboard
+            </NavLink>
+          )}
+          {user && (user.role === "Investor" || user.role === "User") && (
+            <NavLink
+              to="/top-up"
+              className={({ isActive }) =>
+                `hover:text-green-400 ${isActive && "text-green-400"}`
+              }
+            >
+              Top Up
+            </NavLink>
+          )}
+          {user && user.role === "Admin" && (
+            <NavLink
+              to="/admin"
+              className={({ isActive }) =>
+                `hover:text-green-400 ${isActive && "text-green-400"}`
+              }
+            >
+              Admin Panel
             </NavLink>
           )}
         </nav>
 
-        {/* Tombol Wallet & Auth */}
         <div>
           {user ? (
             <div className="flex items-center space-x-3">
-              <span className="bg-gray-800 text-green-400 px-4 py-2 rounded-lg text-sm font-mono">
-                {truncateAddress(user.walletAddress)}
+              <span className="bg-gray-700 text-green-400 px-4 py-2 rounded-lg text-sm font-mono">
+                {truncateAddress(user.walletAddress || walletAddress)}
               </span>
-              <button
+              <Button
                 onClick={logout}
-                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors text-sm"
+                variant="danger"
+                className="py-2 px-4 text-sm"
               >
                 Keluar
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
-              onClick={login}
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
-            >
-              Hubungkan Wallet
-            </button>
-          )}
-          {walletError && (
-            <p className="text-red-500 text-xs mt-1">{walletError}</p>
+            <Button onClick={login}>Hubungkan Wallet</Button>
           )}
         </div>
       </div>
