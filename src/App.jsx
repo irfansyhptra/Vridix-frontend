@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -25,6 +23,8 @@ import FarmerDashboard from "./pages/FarmerDashboard";
 import CreateProposal from "./pages/CreateProposal";
 import TopUp from "./pages/TopUp";
 import UserRoleSwitcher from "./components/common/UserRoleSwitcher";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -41,6 +41,8 @@ function App() {
               <Route path="/crowdfunding" element={<Crowdfunding />} />
               <Route path="/crowdfunding/:id" element={<ProjectDetail />} />
               <Route path="/traceability" element={<Traceability />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
               {/* Rute yang Membutuhkan Login */}
               <Route
@@ -91,9 +93,9 @@ function App() {
               />
 
               {/* Rute Khusus Admin */}
-              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLogin />} />
               <Route
-                path="/admin"
+                path="/admin/dashboard"
                 element={
                   <ProtectedRoute allowedRoles={["Admin"]}>
                     <AdminDashboard />

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Card from "../common/Card";
 import Button from "../common/Button";
-import BlockchainVerification from "./BlockchainVerification";
 
 const MilestoneTracker = ({ milestones }) => {
   const [expandedMilestone, setExpandedMilestone] = useState(null);
@@ -214,17 +213,24 @@ const MilestoneTracker = ({ milestones }) => {
                   {expandedMilestone === milestone.id && (
                     <div className="mt-4 pt-3 border-t">
                       {milestone.transactionHash && milestone.blockNumber ? (
-                        <BlockchainVerification
-                          transactionHash={milestone.transactionHash}
-                          blockNumber={milestone.blockNumber}
-                          timestamp={
-                            milestone.completedDate || milestone.startDate
-                          }
-                          validators={milestone.communityValidation}
-                          consensusStatus={
-                            milestone.communityValidation?.consensus
-                          }
-                        />
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <h4 className="text-green-800 font-medium mb-2">
+                            Verifikasi Milestone
+                          </h4>
+                          <p className="text-green-700 text-sm mb-2">
+                            Milestone ini telah diverifikasi dan dicatat dalam
+                            sistem.
+                          </p>
+                          <div className="text-green-600 text-xs">
+                            <p className="mb-1">
+                              Tanggal:{" "}
+                              {new Date(
+                                milestone.completedDate || milestone.startDate
+                              ).toLocaleDateString()}
+                            </p>
+                            <p className="mb-1">Status: {milestone.status}</p>
+                          </div>
+                        </div>
                       ) : (
                         <div className="text-center py-3 text-gray-500 text-sm italic">
                           <p>

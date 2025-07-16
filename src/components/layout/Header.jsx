@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Button from "../common/Button";
 
 const Header = () => {
-  const { user, login, logout, walletAddress, loading } = useAuth();
+  const { user, logout, loading } = useAuth();
 
   // Loading state
   if (loading) {
@@ -20,11 +20,6 @@ const Header = () => {
       </header>
     );
   }
-
-  const truncateAddress = (address) => {
-    if (!address) return "";
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
 
   return (
     <header className="bg-gray-800/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
@@ -115,17 +110,9 @@ const Header = () => {
         <div>
           {user ? (
             <div className="flex items-center space-x-3">
-              <span className="bg-gray-700 text-green-400 px-4 py-2 rounded-lg text-sm font-mono">
-                {truncateAddress(user.walletAddress || walletAddress)}
+              <span className="bg-gray-700 text-green-400 px-4 py-2 rounded-lg text-sm">
+                {user.name}
               </span>
-              {user.role !== "Admin" && (
-                <NavLink
-                  to="/admin-login"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
-                >
-                  Admin
-                </NavLink>
-              )}
               <Button
                 onClick={logout}
                 variant="danger"
@@ -136,13 +123,14 @@ const Header = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-3">
-              <NavLink
-                to="/admin-login"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
-              >
-                Admin Login
+              <NavLink to="/login">
+                <Button variant="secondary" className="py-2 px-4 text-sm">
+                  Login
+                </Button>
               </NavLink>
-              <Button onClick={login}>Hubungkan Wallet</Button>
+              <NavLink to="/register">
+                <Button className="py-2 px-4 text-sm">Daftar</Button>
+              </NavLink>
             </div>
           )}
         </div>

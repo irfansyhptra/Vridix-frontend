@@ -1,7 +1,7 @@
 // src/pages/Dashboard.jsx
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
-import AdminDashboard from "./AdminDashboard";
+import AdminDashboard from "./AdminDashboardNew";
 import FarmerDashboard from "../components/dashboard/FarmerDashboard";
 import UserDashboard from "../components/dashboard/UserDashboard";
 import ApplicationStatus from "./ApplicationStatus";

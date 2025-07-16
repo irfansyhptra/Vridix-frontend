@@ -12,9 +12,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return null;
   }
 
-  // Jika tidak loading dan tidak ada user, alihkan ke halaman utama
+  // Jika tidak loading dan tidak ada user, alihkan ke halaman login
   if (!user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Jika role dibutuhkan dan role user tidak sesuai, alihkan

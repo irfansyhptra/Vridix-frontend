@@ -28,10 +28,12 @@ const AdminLogin = () => {
       if (formData.username === "admin" && formData.password === "admin123") {
         // Update user menjadi admin
         updateUser({
+          id: 3,
           name: "Admin Utama",
           role: "Admin",
-          walletAddress: "0xAdminWalletAddress...9012",
+          nik: "3201234567890003",
           email: "admin@vridix.com",
+          phoneNumber: "083456789012",
           saldoFiat: 0,
           totalInvestasi: 0,
           proyekDidanai: 0,
@@ -40,7 +42,7 @@ const AdminLogin = () => {
         });
 
         showToast("Login admin berhasil!", "success");
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } else {
         showToast("Username atau password salah!", "error");
       }

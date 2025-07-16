@@ -54,13 +54,13 @@ const ProductCard = ({ product, onBuyNow }) => {
               ? "/hidroponik_kebun_sayur.jpg"
               : product.kategori === "Buah"
               ? "/jagung.jpg"
-              : product.kategori === "Kop i"
+              : product.kategori === "Kopi"
               ? "/kopi.jpg"
               : product.kategori === "Cabai"
               ? "/cabe.jpg"
               : product.kategori === "Ayam"
               ? "/ayam_organik.jpg"
-              : "/sawah.jpg"
+              : product.foto || "/sawah.jpg"
           }
           alt={product.nama}
           className="w-full h-full object-cover"
