@@ -85,6 +85,16 @@ const Header = () => {
               Top Up
             </NavLink>
           )}
+          {user && (
+            <NavLink
+              to="/qris-payment"
+              className={({ isActive }) =>
+                `hover:text-green-400 ${isActive && "text-green-400"}`
+              }
+            >
+              💳 QRIS Payment
+            </NavLink>
+          )}
           {user && user.role === "Admin" && (
             <NavLink
               to="/admin"

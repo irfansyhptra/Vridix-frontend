@@ -1419,6 +1419,138 @@ export const mockData = {
       },
     ],
   },
+
+  // QRIS Payment Mock Data
+  qrisPayments: {
+    userBalances: [
+      {
+        userId: 1,
+        balance: 5500000,
+        lastUpdate: "2025-01-15T10:30:00Z",
+      },
+      {
+        userId: 2,
+        balance: 1200000,
+        lastUpdate: "2025-01-14T15:20:00Z",
+      },
+      {
+        userId: 4,
+        balance: 3000000,
+        lastUpdate: "2025-01-13T09:15:00Z",
+      },
+    ],
+
+    transactions: [
+      {
+        id: "TRX001",
+        userId: 1,
+        type: "debit",
+        amount: 50000,
+        description: "Pembayaran di Warung Segar",
+        merchantName: "Warung Segar",
+        timestamp: "2025-01-15T10:30:00Z",
+        status: "success",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID1234567890123450303UME51440014ID.CO.QRIS.WWW02150012345678901235204549953033605802ID5915WARUNG SEGAR6015JAKARTA SELATAN61051234062070703A016304A123",
+      },
+      {
+        id: "TRX002",
+        userId: 1,
+        type: "credit",
+        amount: 1000000,
+        description: "Hasil Investasi - Kebun Cabai Organik",
+        timestamp: "2025-01-14T14:20:00Z",
+        status: "success",
+      },
+      {
+        id: "TRX003",
+        userId: 1,
+        type: "debit",
+        amount: 125000,
+        description: "Pembayaran di Toko Buah Segar",
+        merchantName: "Toko Buah Segar",
+        timestamp: "2025-01-13T09:15:00Z",
+        status: "success",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID9876543210987650303UME51440014ID.CO.QRIS.WWW02150987654321098765204549953033605802ID5920TOKO BUAH SEGAR6015JAKARTA SELATAN61051234062070703A026304B456",
+      },
+      {
+        id: "TRX004",
+        userId: 1,
+        type: "credit",
+        amount: 2500000,
+        description: "Hasil Investasi - Budidaya Padi Premium",
+        timestamp: "2025-01-12T16:45:00Z",
+        status: "success",
+      },
+      {
+        id: "TRX005",
+        userId: 1,
+        type: "debit",
+        amount: 75000,
+        description: "Pembayaran di Kedai Kopi Petani",
+        merchantName: "Kedai Kopi Petani",
+        timestamp: "2025-01-11T11:30:00Z",
+        status: "success",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID5555666677778880303UME51440014ID.CO.QRIS.WWW02155555666677778880204549953033605802ID5920KEDAI KOPI PETANI6015JAKARTA SELATAN61051234062070703A036304C789",
+      },
+      {
+        id: "TRX006",
+        userId: 2,
+        type: "debit",
+        amount: 35000,
+        description: "Pembayaran di Warung Makan Sederhana",
+        merchantName: "Warung Makan Sederhana",
+        timestamp: "2025-01-14T12:00:00Z",
+        status: "success",
+      },
+      {
+        id: "TRX007",
+        userId: 2,
+        type: "credit",
+        amount: 500000,
+        description: "Top Up Saldo",
+        timestamp: "2025-01-10T08:30:00Z",
+        status: "success",
+      },
+    ],
+
+    merchants: [
+      {
+        id: "MERCH001",
+        name: "Warung Segar",
+        category: "Grocery",
+        location: "Jakarta Selatan",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID1234567890123450303UME51440014ID.CO.QRIS.WWW02150012345678901235204549953033605802ID5915WARUNG SEGAR6015JAKARTA SELATAN61051234062070703A016304A123",
+      },
+      {
+        id: "MERCH002",
+        name: "Toko Buah Segar",
+        category: "Fresh Produce",
+        location: "Jakarta Selatan",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID9876543210987650303UME51440014ID.CO.QRIS.WWW02150987654321098765204549953033605802ID5920TOKO BUAH SEGAR6015JAKARTA SELATAN61051234062070703A026304B456",
+      },
+      {
+        id: "MERCH003",
+        name: "Kedai Kopi Petani",
+        category: "Cafe",
+        location: "Jakarta Selatan",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID5555666677778880303UME51440014ID.CO.QRIS.WWW02155555666677778880204549953033605802ID5920KEDAI KOPI PETANI6015JAKARTA SELATAN61051234062070703A036304C789",
+      },
+      {
+        id: "MERCH004",
+        name: "Warung Makan Sederhana",
+        category: "Restaurant",
+        location: "Bogor",
+        qrisCode:
+          "00020101021226890014ID.CO.QRIS.WWW0215ID1111222233334440303UME51440014ID.CO.QRIS.WWW02151111222233334440204549953033605802ID5926WARUNG MAKAN SEDERHANA6005BOGOR61051234062070703A046304D012",
+      },
+    ],
+  },
 };
 
 export default mockData;

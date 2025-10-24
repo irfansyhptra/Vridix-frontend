@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import GrassIcon from "@mui/icons-material/Grass";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 import PeopleIcon from "@mui/icons-material/People";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -843,7 +844,93 @@ const Home = () => {
               </Button>
             </SpaceCard>
 
-            {/* Card 4: Bergabung Sebagai Petani - Large Card */}
+            {/* Card 4: QRIS Payment */}
+            <SpaceCard
+              elevation={0}
+              sx={{
+                gridColumn: { xs: "span 1", md: "span 2" },
+                height: { xs: 320, md: 360 },
+                borderRadius: 4,
+                p: 4,
+                position: "relative",
+                overflow: "hidden",
+                bgcolor: "rgba(20, 30, 45, 0.7)",
+                backdropFilter: "blur(10px)",
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "translateY(-8px)",
+                  boxShadow: "0 20px 30px rgba(0,0,0,0.2)",
+                },
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                border: "1px solid rgba(255,255,255,0.1)",
+              }}
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: -30,
+                  right: -30,
+                  width: 150,
+                  height: 150,
+                  background:
+                    "radial-gradient(circle, rgba(52, 211, 153, 0.2) 0%, rgba(20, 30, 45, 0) 70%)",
+                  borderRadius: "50%",
+                  opacity: 0.7,
+                }}
+              />
+
+              <Box>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: "rgba(52, 211, 153, 0.2)",
+                      color: "#34d399",
+                      width: 56,
+                      height: 56,
+                    }}
+                  >
+                    <QrCodeScannerIcon sx={{ fontSize: 30 }} />
+                  </Avatar>
+                </Box>
+                <Typography
+                  variant="h4"
+                  sx={{ color: "white", fontWeight: 700, mb: 2 }}
+                >
+                  QRIS Payment
+                </Typography>
+                <Typography variant="body1" sx={{ color: "#9ca3af", mb: 3 }}>
+                  Bayar dengan mudah menggunakan saldo hasil investasi Anda di
+                  merchant yang bekerja sama.
+                </Typography>
+              </Box>
+
+              <Button
+                component={Link}
+                to="/qris-payment"
+                variant="contained"
+                sx={{
+                  bgcolor: "rgba(52, 211, 153, 0.2)",
+                  color: "#34d399",
+                  fontWeight: 600,
+                  py: 1,
+                  px: 3,
+                  borderRadius: 2,
+                  width: "fit-content",
+                  textTransform: "none",
+                  "&:hover": {
+                    bgcolor: "rgba(52, 211, 153, 0.3)",
+                  },
+                }}
+              >
+                Mulai Bayar
+              </Button>
+            </SpaceCard>
+
+            {/* Card 5: Bergabung Sebagai Petani - Large Card */}
             <SpaceCard
               elevation={0}
               sx={{

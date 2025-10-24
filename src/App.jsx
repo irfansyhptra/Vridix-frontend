@@ -22,6 +22,7 @@ import AdminLogin from "./pages/AdminLogin";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import CreateProposal from "./pages/CreateProposal";
 import TopUp from "./pages/TopUp";
+import QRISPaymentPage from "./pages/QRISPaymentPage";
 import UserRoleSwitcher from "./components/common/UserRoleSwitcher";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -82,6 +83,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TopUp />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/qris-payment"
+                element={
+                  <ProtectedRoute>
+                    <QRISPaymentPage />
                   </ProtectedRoute>
                 }
               />
