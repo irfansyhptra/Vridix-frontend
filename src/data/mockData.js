@@ -84,6 +84,21 @@ export const mockData = {
       password: "password123",
       joinDate: "2024-03-10",
     },
+    {
+      id: 6,
+      nik: "3201234567890006",
+      name: "User Biasa",
+      role: "User",
+      saldoFiat: 800000,
+      totalInvestasi: 0,
+      proyekDidanai: 0,
+      totalBelanja: 0,
+      email: "user@vridix.com",
+      phoneNumber: "086789012345",
+      password: "password123",
+      joinDate: "2024-04-05",
+      fundedProjects: [],
+    },
   ],
 
   // Data pendaftaran petani yang menunggu verifikasi

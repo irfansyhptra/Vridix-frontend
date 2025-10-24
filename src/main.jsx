@@ -6,6 +6,12 @@ import App from "./App.jsx";
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { BrowserRouter as Router } from "react-router-dom"; // PERBAIKAN: Impor Router di sini
+import { logDummyAccounts } from "./utils/devHelper.js";
+
+// Log dummy accounts in development mode
+if (import.meta.env.DEV) {
+  logDummyAccounts();
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
